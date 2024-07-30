@@ -53,7 +53,7 @@ pygame.display.set_caption('Sensor Display')
 
 # Colors
 WHITE = (255, 255, 255)
-BLACK = (0, 0, 0)
+BLACK = (255, 255, 255)
 GREEN = (54, 161, 93)
 minimum_threshold = 305
 
@@ -68,9 +68,9 @@ font_medium = pygame.font.Font(None, 50)
 font_small = pygame.font.Font(None, 36)
 
 # Images
-background_img = pygame.image.load('images/bg.jpg')
-barbie_img = pygame.image.load('images/barbie.jpeg')
-cena_img = pygame.image.load('images/cena.jpeg')
+background_img = pygame.image.load('images/bg.png')
+barbie_img = pygame.image.load('images/barbie.png')
+cena_img = pygame.image.load('images/cenaa.png')
 
 # JSON file to store high scores
 high_score_file = 'high_scores.json'
@@ -107,12 +107,12 @@ def display_initial_screen():
     title_text = font_large.render("Welcome to the Boxing Game", True, BLACK)
     sub_text = font_medium.render("Let's see what you got? Hit the pad, watch your score soar!", True, BLACK)
     sub_text_two = font_medium.render("Show off your power and dominate the leaderboard!", True, BLACK)
-    high_score_text = font_medium.render(f"High Score: {highest_score}", True, GREEN)
+    high_score_text = font_large.render(f"High Score: {highest_score}", True, GREEN)
 
-    title_rect = title_text.get_rect(center=(screen_width / 2, screen_height * 0.15))
-    sub_text_rect = sub_text.get_rect(center=(screen_width / 2, screen_height * 0.25))
-    sub_text_two_rect = sub_text_two.get_rect(center=(screen_width / 2, screen_height * 0.3))
-    high_score_rect = high_score_text.get_rect(center=(screen_width / 2, screen_height * 0.85))
+    title_rect = title_text.get_rect(center=(screen_width / 2, screen_height * 0.3))
+    sub_text_rect = sub_text.get_rect(center=(screen_width / 2, screen_height * 0.45))
+    sub_text_two_rect = sub_text_two.get_rect(center=(screen_width / 2, screen_height * 0.5))
+    high_score_rect = high_score_text.get_rect(center=(screen_width / 2, screen_height * 0.93))
 
     screen.blit(title_text, title_rect)
     screen.blit(sub_text, sub_text_rect)
@@ -140,17 +140,17 @@ def update_display(fsr1, fsr2, average_force):
     pygame.draw.rect(screen, WHITE, pygame.Rect(screen_width * 0.2, screen_height * 0.4, screen_width * 0.6, screen_height * 0.1), border_radius=10)
     screen.blit(avg_force_text, (screen_width * 0.25, screen_height * 0.42))
     
-    if average_force < 950:
+    if average_force >= 600 and average_force <= 900:
         # Display the "barbie" image
-        screen.blit(pygame.transform.scale(barbie_img, (screen_width // 4, screen_height // 4)), (screen_width * 0.75, screen_height * 0.5))
+        screen.blit(pygame.transform.scale(barbie_img, (screen_width // 2, screen_height // 2)), (screen_width * 0.75, screen_height * 0.5))
         play_song('barbie.mp3')
         
         # Select and display a random insult
         insult = random.choice(insults)
-        insult_text = font_small.render(insult, True, BLACK)
-        insult_rect = insult_text.get_rect(center=(screen_width * 0.5, screen_height * 0.7))
+        insult_text = font_medium.render(insult, True, BLACK)
+        insult_rect = insult_text.get_rect(center=(screen_width * 0.5, screen_height * 0.15))
         screen.blit(insult_text, insult_rect)
-    else:
+    elif average_force <900 :
         # Display the "cena" image
         screen.blit(pygame.transform.scale(cena_img, (screen_width // 4, screen_height // 4)), (screen_width * 0.75, screen_height * 0.5))
         play_song('cena.mp3')
@@ -160,6 +160,16 @@ def update_display(fsr1, fsr2, average_force):
         praise_text = font_small.render(praise, True, BLACK)
         praise_rect = praise_text.get_rect(center=(screen_width * 0.5, screen_height * 0.7))
         screen.blit(praise_text, praise_rect)
+    else : 
+        # Display the "barbie" image
+        screen.blit(pygame.transform.scale(barbie_img, (screen_width // 2, screen_height // 2)), (screen_width * 0.75, screen_height * 0.5))
+        play_song('barbie.mp3')
+        
+        # Select and display a random insult
+        insult = random.choice(insults)
+        insult_text = font_medium.render(insult, True, BLACK)
+        insult_rect = insult_text.get_rect(center=(screen_width * 0.5, screen_height * 0.15))
+        screen.blit(insult_text, insult_rect)
 
         if average_force > highest_score:
             highest_score = average_force
@@ -223,7 +233,6 @@ while True:
                 screen = pygame.display.set_mode((screen_width, screen_height), pygame.RESIZABLE)
                 display_initial_screen()
 
-        # Check if the current state is "update" and if the timer has elapsed
         if current_state == "update" and time.time() - update_screen_timer > update_screen_display_time:
             display_initial_screen()  # Go back to the initial screen
 
