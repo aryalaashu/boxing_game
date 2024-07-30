@@ -1,6 +1,6 @@
 const int fsrPin1 = A0; // FSR 1 connected to analog pin A0
 const int fsrPin2 = A1; // FSR 2 connected to analog pin A1
-const int forceThreshold = 100; // Minimum value to consider as a valid force
+const int forceThreshold = 350; // Minimum value to consider as a valid force
 
 void setup() {
   Serial.begin(9600); // Initialize serial communication
