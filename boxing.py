@@ -45,6 +45,16 @@ praises = [
     "Boxing legend in the making!"
 ]
 
+insults_music = [
+    "barbie.mp3",
+    
+]
+
+praises_music = [
+    "cena.mp3",
+    
+]
+
 # Display setup
 info = pygame.display.Info()
 screen_width, screen_height = info.current_w, info.current_h
